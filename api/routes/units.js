@@ -5,7 +5,7 @@ const { generate: generateId } = require("shortid");
 // const publicKeys = "";
 
 // Initial data for setup and testing
-const unit = [
+const units = [
   {
     id: "j9U3iNIQi",
     kind: "small office",
@@ -17,7 +17,7 @@ const unit = [
 
 router.get("/", (req, res, next) => {
   const status = 200;
-  const response = unit.find().select(publicKeys);
+  const response = units;
 
   res.json({ status, response });
 });
