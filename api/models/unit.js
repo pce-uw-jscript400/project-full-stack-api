@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Company = require("/company");
+const Company = require("./company").schema;
 
 const unitSchema = new Schema(
   {
@@ -23,7 +23,7 @@ const unitSchema = new Schema(
         dob: String
       }
     ],
-    company: Company
+    company: [Company]
     // company: [{ type: Schema.Types.ObjectId, ref: "Company" }] // NOT 100% ON THIS
   },
   {

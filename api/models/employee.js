@@ -12,6 +12,7 @@ const employeeSchema = new Schema(
       required: true
     },
     preferred_name: String,
+    position: String,
     birthday: String,
     email: {
       type: String,
