@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const employeeSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     first_name: {
       type: String,
       required: true
