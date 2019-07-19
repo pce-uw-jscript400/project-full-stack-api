@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Employee = require("/employee");
 
 const companySchema = new Schema(
   {
+    _id: Schema.Types.ObjectId,
     name: {
       type: String,
       required: true
@@ -11,7 +13,8 @@ const companySchema = new Schema(
       type: String,
       required: true
     },
-    employees: Object // NOT 100% come back to this
+    employees: Employee
+    // employees: [{ type: Schema.Types.ObjectId, ref: "Employee" }] // NOT 100% ON THIS
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
