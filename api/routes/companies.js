@@ -1,7 +1,6 @@
 const router = require("express").Router();
 // const helpers = require("../helpers/helpers");
 const Company = require("../models/company");
-const Employee = require("../models/employee").schema;
 
 // const publicKeys = "";
 
@@ -25,7 +24,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   const status = 201;
   try {
-    const response = await Company.create(req.body).populate("Employee");
+    const response = await Company.create(req.body);
     res.json({ status, response });
   } catch (error) {
     console.log(error);
