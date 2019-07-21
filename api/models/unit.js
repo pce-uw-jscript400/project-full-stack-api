@@ -5,23 +5,19 @@ const Company = require("./company");
 const unitSchema = new Schema(
   {
     kind: {
-      seat: String,
-      desk: String,
-      small_office: String,
-      large_office: String,
-      floor: Number,
+      type: String,
+      enum: [
+        "seat",
+        "desk",
+        "small_office",
+        "large_office",
+        "floor",
+        "required"
+      ],
       required: true
     },
     floor: { type: Number, required: true },
-    special_monthly_offer: [
-      {
-        name: {
-          type: String,
-          required: false
-        },
-        dob: String
-      }
-    ],
+    special_monthly_offer: { type: Number, min: 0, max: 1000000 },
     company: [Company]
   },
   {
