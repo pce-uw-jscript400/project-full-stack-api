@@ -12,8 +12,13 @@ if (MONGO_DB) {
     console.log('MONGO_DB is not provided')
 }
 if (NODE_ENV === 'development') app.use(morgan('dev'))
+app.use(require('body-parser').json())
 
-app.use('/api/courses', require('./api/routes/courses'))
+app.use('/api/units', require('./api/routes/units'))
+
+app.use(({ status = 500, message = 'Something went wrong' }, req, res, next) => {
+    res.status(status).json({ status, message })
+})
 
 const listener = () =>(console.log('begin'))
 app.listen(PORT, listener)
