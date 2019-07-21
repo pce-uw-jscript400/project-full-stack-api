@@ -21,7 +21,8 @@ const unitsSchema = new Schema({
     type: Number
   },
   company: {
-    type: Array
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Companies'
   }
 })
 
