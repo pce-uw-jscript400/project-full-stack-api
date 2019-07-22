@@ -10,10 +10,10 @@ const companiesQuery = (key, value) => {
     case 'floor':
       return {floor: value}
     case 'occupied':
-      if (value === true) {
-        return {['companies.0']:{$exists: true}}
+      if (value == 'true') {
+        return {['company']:{$exists: true}}
       }
-      return {['companies.0']:{$exists: false}}
+      return {['company']:{$exists: false}}
   }
 }
 
