@@ -7,6 +7,9 @@ const schema = new mongoose.Schema({
     position: String,
     birthday: Date,
     email: String
+},
+{
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 })
 
 module.exports = schema
