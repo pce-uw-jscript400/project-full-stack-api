@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validators = require('../validators/validators');
 const Schema = mongoose.Schema;
 
 const employeesSchema = new Schema({

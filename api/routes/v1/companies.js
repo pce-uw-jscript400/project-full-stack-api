@@ -3,14 +3,6 @@ const Companies = require('../../models/companies')
 
 // Companies
 
-const getQueryString = (obj) => {
-  let query = '';
-  if (obj) {
-    let key = Object.keys(obj)[0];
-    let value = obj[key];
-  }
-}
-
 const companiesQuery = (key, value) => {
   switch (key) {
     case 'name':
