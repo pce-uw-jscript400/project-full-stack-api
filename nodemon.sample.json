@@ -1,5 +1,6 @@
 {
     "env": {
+        "MONGO_DB": "mongodb+srv://shazam13:<password>@cluster0-1gcez.gcp.mongodb.net/project_fs_api?retryWrites=true&w=majority",
         "NODE_ENV": "development",
         "PORT": 5000
     }
