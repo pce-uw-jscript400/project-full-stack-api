@@ -11,4 +11,14 @@ router.get('/', (req, res, next) => {
     })
 })
 
+//Create
+router.post('/', (req, res, next) => {
+    const status = 201
+    console.log('req.body', req.body )
+    Units.create(req.body).then(response => {
+        console.log(response)
+        res.status(201).json({ status, response })
+    }).catch(console.error)
+})
+
 module.exports = router

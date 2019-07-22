@@ -13,9 +13,14 @@ if (MONGO_DB){
 }
 
 if (NODE_ENV === 'development') app.use(morgan('dev'))
+
 // body-parser
 
+app.use(require('body-parser').json())
+
+
 app.use('/api/v1', require('./api/routes/units'))
+
 
 const listener = () => console.log(`You're listening on PORT:5000`)
 app.listen(PORT, listener)
