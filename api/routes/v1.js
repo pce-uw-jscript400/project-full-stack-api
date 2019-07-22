@@ -18,8 +18,13 @@ router.get('/units', async (req, res, next) => {
     const status = 200
     const findOccupied = req.query.occupied
     if(findOccupied){
-        const response = await Units.find({company: { $exists: findOccupied } } )
-        res.json({ status, response })
+        if(findOccupied === 'false'){
+            const response = await Units.find({company: null } )
+            res.json({ status, response })
+        }else{
+            const response = await Units.find({company: {$ne: null}})
+            res.json({status, response})
+        }
     }else{
         const response = await Units.find(req.query)
         res.json({ status, response })
@@ -60,6 +65,170 @@ router.patch('/units/:id/company', async(req, res, next)=> {
         console.error(`REALERROR:/n${error}`)
         const e = new Error("There is no unit with that id")
         e.status = 404
+        next(e)
+    }
+})
+
+// DELETE /api/v1/units/[id]/company
+//Remove the company from the given unit. If the ID provided does not match a unit, return a 404 and an
+//appropriate message.
+router.delete('/units/:id/company', async(req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        theCompany.remove()
+        unit.save()
+        const response = unit
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/n${error}`)
+        const e = new Error("There is no unit with that id")
+        e.status = 404
+        next(e)
+    }
+})
+
+//GET http://localhost:5000/api/v1/units/5/company/employees
+//Return all employees for the given company. If no company is listed, return a 404 and an appropriate message.
+//If the ID provided does not match a unit, return a 404 and a different appropriate message.
+router.get('/units/:id/company/employees', async(req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        const response = theCompany.employees
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/${error}`)
+        if(error.name === 'CastError'){
+            const e = new Error("There is no unit with that number")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'TypeError'){
+            const e = new Error("There is no Company for this Unit")
+            e.status = 404
+            next(e)
+        }
+        const e = new Error("Something went wrong")
+        e.status = 400
+        next(e)
+    }
+})
+
+//NOT FINISHED - IF THERE IS NO EMPLOYEE WITH THAT ID IT RETURNS NULL
+//GET /api/v1/units/[id]/company/employees/[id]
+//Return the specific employee for the given company. If no company is listed, return a 404 and an appropriate
+//message. If the unit ID provided does not match a unit, return a 404 and a _different_ appropriate message.
+//If no employee with that ID exists, return a _different_ appropriate message.
+router.get('/units/:id/company/employees/:eid', async(req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        const theEmployee = theCompany.employees.id({_id: req.params.eid})
+        //if (theEmployee === null){
+            //status = 404
+            //const response = "No employee with the ID found"
+            //res.json({status, response})
+       // }
+        const response = theEmployee
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/${error}`)
+        if(error.name === 'CastError'){
+            const e = new Error("There is no unit with that number")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'TypeError'){
+            const e = new Error("There is no Company for this Unit")
+            e.status = 404
+            next(e)
+        }
+        const e = new Error("Something went wrong")
+        e.status = 400
+        next(e)
+    }
+})
+
+
+//WILL NOT SHOW VALIDATION ERROR
+//POST /api/v1/units/[id]/company/employees
+//Create a new employee and return that employee for the given company. If no company is listed,
+//return a 404 and an appropriate message. If the unit ID provided does not match a unit,
+// return a 404 and a _different_ appropriate message. If the employee information is malformed in any way,
+//return a 400 and an error message with as much detail as possible.
+router.post('/units/:id/company/employees/', async (req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        const newEmployee = theCompany.employees.push(req.body)
+        const response = req.body
+        newEmployee.isNew;
+        unit.save()
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/${error}`)
+        if(error.name === 'CastError'){
+            const e = new Error("There is no unit with that number")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'TypeError'){
+            const e = new Error("There is no Company for this Unit")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'ValidationError'){
+            const e = new Error(error.message)
+            e.status = 400
+            next(e)
+        }
+        const e = new Error("Something went wrong")
+        e.status = 400
+        next(e)
+    }
+})
+
+///NOT FINISHED - Will not show validation errors - also reciving other errors
+// PATCH /api/v1/units/[id]/company/employees/[id]
+//Update an employee and return that employee for the given company. If no company is listed, return a 404
+//and an appropriate message. If the unit ID provided does not match a unit,
+//return a 404 and a _different_ appropriate message. If the employee information is malformed in any way,
+// return a 400 and an error message with as much detail as possible. If no employee with that ID exists,
+// return a _different_ appropriate message.
+router.patch('/units/:id/company/employees/', async (req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        const newEmployee = theCompany.employees.push(req.body)
+        const response = req.body
+        newEmployee.isNew;
+        unit.save()
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/${error}`)
+        if(error.name === 'CastError'){
+            const e = new Error("There is no unit with that number")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'TypeError'){
+            const e = new Error("There is no Company for this Unit")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'ValidationError'){
+            const e = new Error(error.message)
+            e.status = 400
+            next(e)
+        }
+        const e = new Error("Something went wrong")
+        e.status = 400
         next(e)
     }
 })
