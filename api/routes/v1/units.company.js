@@ -5,10 +5,7 @@ const Units = require('../../models/units')
 
 router.get('/', async (req, res, next) => {
   const status = 200
-  const response = await Units.find().populate({
-    path: 'company',
-    populate: {path: 'employees'}
-  })
+  const response = await Units.find()
   res.json({status, response})
 })
 
