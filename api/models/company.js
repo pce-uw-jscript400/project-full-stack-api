@@ -5,8 +5,7 @@ const schema = new mongoose.Schema({
    name: {type: String, required: true},
    contact_email: {type: String, required: true}
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at'},
-    versionKey: { type: Number, select: false} 
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at'}
 })
 
 //export model

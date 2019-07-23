@@ -3,19 +3,28 @@ const Units = require('../models/units')
 
 
 //Get all routes and queries. 
-router.get('/units', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     const status = 200
 
-     if(typeof req.query.kind != 'undefined'){
-        res.json(req.query)
-    } else if (typeof req.query.floor != 'undefined') {
-        res.json(req.query)
-    } else if (typeof req.query.occupied != 'undefined') {
-        if (await Units.find().then(response => {res.json({ status, response })}) != 'null'){
-            res.json('No Vancancies')
-        } else {
-            res.json('Vancancy')
-        }
+     if(typeof req.query.kind !== 'undefined'){
+         await Units.find().select('kind').then(response => {
+            res.json({ status, response })
+         })
+
+    } else if (typeof req.query.floor !== 'undefined') {
+        await Units.find().select('floor').then(response => {
+            res.json({ status, response })
+         })
+
+    } else if (typeof req.query.occupied !== 'undefined') {
+        await Units.find({company: []}, (err, result) => {
+            if (err) {console.log(err)}
+            if (!result.length) {
+                res.json('Vancancies')
+            } else{
+                res.json('No Vancancies')
+            }
+        })
     } else {
         await Units.find().then(response => {
             res.json({ status, response })
@@ -23,10 +32,9 @@ router.get('/units', async (req, res, next) => {
     }
 })
 
-
-
 //Get unit by ID
-router.get('/units/:id?', (req, res, next) => {
+router.patch('/units/:id', (req, res, next) => {
+
     res.json('Something')
 })
 
@@ -35,9 +43,6 @@ router.get('/units/:id/companies', (req, res, next) => {
     res.json('unit id and company')
 })
 
-router.get('/companies', (req, res, next) => {
-    res.json('Companies')
-})
 //Create
 router.post('/', (req, res, next) => {
     const status = 201
