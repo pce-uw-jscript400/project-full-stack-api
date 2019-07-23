@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Company = require("./company");
+const companySchema = require("./company");
 
 const unitSchema = new Schema(
   {
@@ -18,7 +18,7 @@ const unitSchema = new Schema(
     },
     floor: { type: Number, required: true },
     special_monthly_offer: { type: Number, min: 0, max: 1000000 },
-    company: [Company]
+    company: [companySchema]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

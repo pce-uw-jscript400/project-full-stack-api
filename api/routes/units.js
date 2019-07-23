@@ -1,34 +1,108 @@
 const router = require("express").Router();
 // const helpers = require("../helpers/helpers");
-// const Unit = require("../models/unit");
+const Unit = require("../models/unit");
 
-// const publicKeys = "";
+const publicKeys = "_id kind floor special_monthly_offer company -__v";
 
 // Initial data for setup and testing
-const units = [
-  {
-    id: "j9U3iNIQi",
-    kind: "small office",
-    floor: 10,
-    special_monthly_offer: "$600/mo",
-    company: "Stan's Office Supplies"
-  }
-];
+// const units = [
+//   {
+//     id: "j9U3iNIQi",
+//     kind: "small office",
+//     floor: 10,
+//     special_monthly_offer: "$600/mo",
+//     company: "Stan's Office Supplies"
+//   }
+// ];
 
-router.get("/", (req, res, next) => {
+// GET ALL UNITS
+// router.get("/", async (req, res, next) => {
+//   const status = 200;
+//   try {
+//     const response = await Unit.find();
+//     res.json({ status, response });
+//   } catch (error) {
+//     console.log(error);
+//     const e = new Error(
+//       "Something went wrong when attempting to get all the units."
+//     );
+//     e.status = 400;
+//     next(e);
+//   }
+// });
+
+// TEST /////////
+
+router.get("/", async (req, res, next) => {
   const status = 200;
-  const response = units;
-
-  res.json({ status, response });
+  try {
+    // const response = await Unit.find();
+    // res.json({ status, response });
+    const kind = req.query.kind;
+    const findUnitKind = await Unit.find({ kind }).getFilter();
+    console.log("### -> ", findUnitKind);
+    res.json({ status, findUnitKind });
+  } catch (error) {
+    console.log(error);
+    const e = new Error(
+      "Something went wrong when attempting to find kind of unit."
+    );
+    e.status = 400;
+    next(e);
+  }
 });
+
+// TEST /////////
+
+// GET KIND OF UNIT
+// router.get("/:kind", async (req, res, next) => {
+//   const status = 200;
+//   // const kind = req.params.kind;
+//   // const kindList = kind.find().select(publicKeys)
+//   try {
+//     const { kindList } = await Unit.find(req.params.kind).select(kind);
+//     res.json({ status, kindList });
+//   } catch (error) {
+//     console.log(error);
+//     const e = new Error(
+//       "Something went wrong when attempting to get kind of unit."
+//     );
+//     e.status = 400;
+//     next(e);
+//   }
+// });
+
+///
+// router.get("/", async (req, res, next) => {
+//   const status = 200;
+//   const { authors } = await Book.findById(req.params.bookId)
+//     .select("authors")
+//     .select(publicKeys);
+//   res.json({ status, authors });
+// });
+
+// router.post("/", async (req, res, next) => {
+//   const status = 201;
+//   try {
+//     res.json({ status, response });
+//   } catch (error) {
+//     console.log(error);
+//     const e = new Error("Something went wrong.");
+//     e.status = 400;
+//     next(e);
+//   }
+// });
 
 router.post("/", async (req, res, next) => {
   const status = 201;
   try {
+    const response = await Unit.create(req.body);
     res.json({ status, response });
   } catch (error) {
     console.log(error);
-    const e = new Error("Something went wrong.");
+    const e = new Error(
+      "Something went wrong when attempting to post the company."
+    );
     e.status = 400;
     next(e);
   }

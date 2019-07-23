@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Employee = require("./employee");
+const employeeSchema = require("./employee");
 
 const companySchema = new Schema(
   {
@@ -12,7 +12,7 @@ const companySchema = new Schema(
       type: String,
       required: true
     },
-    employees: [Employee]
+    employees: [employeeSchema]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
