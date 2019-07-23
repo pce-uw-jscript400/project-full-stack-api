@@ -154,7 +154,7 @@ router.get('/units/:id/company/employees/:eid', async(req, res, next)=> {
 })
 
 
-//WILL NOT SHOW VALIDATION ERROR
+//WILL NOT SHOW VALIDATION ERRORS - Just shows req.body
 //POST /api/v1/units/[id]/company/employees
 //Create a new employee and return that employee for the given company. If no company is listed,
 //return a 404 and an appropriate message. If the unit ID provided does not match a unit,
@@ -178,7 +178,47 @@ router.post('/units/:id/company/employees/', async (req, res, next)=> {
             next(e)
         }
         if(error.name === 'TypeError'){
-            const e = new Error("There is no Company for this Unit")
+            const e = new Error("There is no comapany for this unit")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'ValidationError'){
+            const e = new Error(error.message)
+            e.status = 400
+            next(e)
+        }
+        const e = new Error(error.message)
+        e.status = 400
+        next(e)
+    }
+})
+
+///NOT FINISHED - Will not show validation errors
+// PATCH /api/v1/units/[id]/company/employees/[id]
+//Update an employee and return that employee for the given company. If no company is listed, return a 404
+//and an appropriate message. If the unit ID provided does not match a unit,
+//return a 404 and a _different_ appropriate message. If the employee information is malformed in any way,
+// return a 400 and an error message with as much detail as possible. If no employee with that ID exists,
+// return a _different_ appropriate message.
+router.patch('/units/:id/company/employees/:eid', async (req, res, next)=> {
+    const status = 201
+    try{
+        const unit = await Units.findOne({_id: req.params.id})
+        const theCompany = unit.company
+        const employee = theCompany.employees.id({_id: req.params.eid})
+        employee.set(req.body)
+        unit.save()
+        const response = employee
+        res.json({status, response})
+    }catch(error){
+        console.error(`REALERROR:/${error}`)
+        if(error.name === 'CastError'){
+            const e = new Error("There is no unit with that number")
+            e.status = 404
+            next(e)
+        }
+        if(error.name === 'TypeError'){
+            const e = new Error("There is no employee with that number")
             e.status = 404
             next(e)
         }
@@ -193,21 +233,20 @@ router.post('/units/:id/company/employees/', async (req, res, next)=> {
     }
 })
 
-///NOT FINISHED - Will not show validation errors - also reciving other errors
-// PATCH /api/v1/units/[id]/company/employees/[id]
-//Update an employee and return that employee for the given company. If no company is listed, return a 404
-//and an appropriate message. If the unit ID provided does not match a unit,
-//return a 404 and a _different_ appropriate message. If the employee information is malformed in any way,
-// return a 400 and an error message with as much detail as possible. If no employee with that ID exists,
-// return a _different_ appropriate message.
-router.patch('/units/:id/company/employees/', async (req, res, next)=> {
+/
+/// DELETE /api/v1/units/[id]/company/employees/[id]
+//Destroy the employee document and return that employee's document for the given company.
+//If no company is listed, return a 404 and an appropriate message.
+//If the unit ID provided does not match a unit, return a 404 and a _different_ appropriate message.
+//If no employee with that ID exists, return a _different_ appropriate message.
+router.delete('/units/:id/company/employees/:eid', async (req, res, next)=> {
     const status = 201
     try{
         const unit = await Units.findOne({_id: req.params.id})
         const theCompany = unit.company
-        const newEmployee = theCompany.employees.push(req.body)
-        const response = req.body
-        newEmployee.isNew;
+        const employee = theCompany.employees.id({_id: req.params.eid})
+        response = employee
+        employee.remove()
         unit.save()
         res.json({status, response})
     }catch(error){
@@ -218,13 +257,8 @@ router.patch('/units/:id/company/employees/', async (req, res, next)=> {
             next(e)
         }
         if(error.name === 'TypeError'){
-            const e = new Error("There is no Company for this Unit")
+            const e = new Error("Cannot Find Employee with that number")
             e.status = 404
-            next(e)
-        }
-        if(error.name === 'ValidationError'){
-            const e = new Error(error.message)
-            e.status = 400
             next(e)
         }
         const e = new Error("Something went wrong")
@@ -232,6 +266,30 @@ router.patch('/units/:id/company/employees/', async (req, res, next)=> {
         next(e)
     }
 })
+
+//GET /api/v1/companies
+//Return all companies with all their employees information. Do not return an unit information.
+//GET /api/v1/companies?name=[partial-query]
+//Return all companies with all their employees information based off of the partial search string.
+//For example, the above search would return companies with the name of "Google" and "Ooga".
+// Do not return any unit information. If no companies are found, return an empty array.
+
+router.get('/companies', async(req, res, next)=> {
+    const status = 201
+    try{
+        const companyName = req.query.name
+        const response = await Units.find({'company.name':{$regex: new RegExp(companyName), '$options': 'i'}})
+        .select('-_id company');
+
+        res.json({status, response});
+
+    }catch(error){
+        console.log(`REALERR:${error}`)
+        const e = new Error("Something went wrong")
+        e.status = 400
+        next(e)
+    }
+});
 
 
 //Add the units
