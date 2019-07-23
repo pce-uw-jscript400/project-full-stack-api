@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const Unit = require('../models/unit')
-const Company = require('../models/company')
-const Employee = require('../models/employee')
+const Unit = require('../models/units')
+const Company = require('../models/companies')
+// const Employee = require('../models/employees')
 
 // GET /api/units
 // Return a list of all of the units with all related information.
-router.get('/units',(req, res, next) => {
+router.get('/',(req, res, next) => {
     const status = 200
     Unit.find().then(response => {
         console.log(response)
@@ -13,13 +13,23 @@ router.get('/units',(req, res, next) => {
     })
 })
 
+// GET companies
+router.get(':id/company',async (req, res, next) => {
+    const status = 200
+    const response = await Unit.findById(req.params.id).select('company')
+    res.json({ status, response })
+})
+    // Company.find().then(response => {
+    //     console.log(response)
+    //     res.json({ status, response })
+    // })
+// })
+
 // CREATE
-router.post('/units', (req, res, next) => {
+router.post('/', (req, res, next) => {
     const status = 201
-    // console.log('req.body', req.body)
+    console.log('req.body', req.body)
     Unit.create(req.body).then(response => {
-        throw 'everything is broken'
-        // console.log(response)
         res.status(status).json({ status, response })
     }).catch(error => {
         console.error(error)
@@ -29,23 +39,12 @@ router.post('/units', (req, res, next) => {
     })
 })
 
-// GET /api/v1/units/[id]
-router.get("/units/:id", async (req, res, next) => {
-    const status = 200;
-    const response = await Unit.findById(req.params.id);
-    res.json({ status, response });
-});
-
-//DELETE
-router.delete("/units/:id", async (req, res, next) => {
-    const status = 200;
-    const response = await Unit.findOneAndDelete({ _id: req.params.id });
-    res.json({ status, response });
-});
-
+// GET /api/units?kind=[kind]
+// GET /api/units?floor=[integer]
+// GET /api/v1/units?occupied=[true/false]
 
 // PATCH /api/units/[id] 
-router.patch("/units/:id", async (req, res, next) => {
+router.patch("/:id", async (req, res, next) => {
     const status = 201;
     try{
         const response = await Unit.findOneAndUpdate({_id: req.params.id}, req.body, {new: true})
@@ -57,11 +56,51 @@ router.patch("/units/:id", async (req, res, next) => {
     }
 })
 
-// // GET Companies 
-// // GET http://localhost:5000/api/companies
-// // Return all companies with all their employees information. Do not return an unit information.
 
-router.get('/companies', (req, res, next) => {
+// PATCH /api/units/[id]/company
+// e.g. PATCH http://localhost:5000/api/v1/units/5/company
+
+router.patch('/:id/company',async (req, res, next) => {
+    const status = 201;
+    try{
+        const response = await Unit.findOneAndUpdate({_id: req.params.id},  {company: {...req.body}}, {new: true})
+        res.json({status, response})
+    }catch(error){
+        const e = new Error("Unit doesn't exist")
+        e.status = 404
+        next(e)
+    }
+})
+
+// DELETE /api/v1/units/[id]/company
+// GET /api/v1/units/[id]/company/employees
+// GET /api/v1/units/[id]/company/employees/[id]
+
+
+
+// POST /api/v1/units/[id]/company/employees
+
+// GET /api/v1/units/[id]
+router.get("/:id", async (req, res, next) => {
+    const status = 200;
+    const response = await Unit.findById(req.params.id);
+    res.json({ status, response });
+});
+
+//DELETE
+router.delete("/:id", async (req, res, next) => {
+    const status = 200;
+    const response = await Unit.findOneAndDelete({ _id: req.params.id });
+    res.json({ status, response });
+});
+
+
+
+
+// PATCH /api/units/[id]/company
+// e.g. PATCH http://localhost:5000/api/v1/units/5/company
+
+router.patch('/:id/companies', (req, res, next) => {
     const status = 200
     Company.find().then(response => {
         res.json({ status, response })

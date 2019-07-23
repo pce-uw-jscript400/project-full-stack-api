@@ -17,7 +17,7 @@ if (NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(require('body-parser').json())
 
 //Routes
-app.use('/api', require('./api/routes/units'));
+app.use('/api/units', require('./api/routes/units'));
 // app.use('/api/', require('./api/routes/employees'));
 // app.use('/api/', require('./api/routes/companies'));
 
