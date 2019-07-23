@@ -19,7 +19,7 @@ if (NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(require('body-parser').json())
 
 
-app.use('/api/v1/units', require('./api/routes/units'))
+app.use('/api/v1/', require('./api/routes/units'))
 
 app.use('/api/v1/companies', require('./api/routes/company'))
 

@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const Units = require('../models/units')
+const Company = require('../models/company')
 
 
 //Get all routes and queries. 
-router.get('/', async (req, res, next) => {
+router.get('/units', async (req, res, next) => {
     const status = 200
 
      if(typeof req.query.kind !== 'undefined'){
@@ -20,10 +21,20 @@ router.get('/', async (req, res, next) => {
         await Units.find({company: []}, (err, result) => {
             if (err) {console.log(err)}
             if (!result.length) {
-                res.json('Vancancies')
+                 Units.find({company: []}).then(response => {
+                    res.json({ status, response})
+                }).catch(error => {
+                    console.error(error)
+                })
             } else{
-                res.json('No Vancancies')
+                 Units.find({company: []}).then(response => {
+                    res.json({status, response})
+                }).catch(error => {
+                    console.error(error)
+                })
             }
+        }).catch(error => {
+            console.error(error)
         })
     } else {
         await Units.find().then(response => {
@@ -33,9 +44,29 @@ router.get('/', async (req, res, next) => {
 })
 
 //Get unit by ID
-router.patch('/units/:id', (req, res, next) => {
+router.patch('/units/:id', async (req, res, next) => {
+    const status = 201
 
-    res.json('Something')
+    await Units.findById(req.params.id, (err, unit) => {
+        if(err){
+            console.error(err)
+        } else {
+            unit.save()
+            res.json({ status, unit})
+            
+        }
+    })
+    
+})
+
+//Get unit by ID
+router.get('/units/:id', async (req, res, next) => {
+    const status = 201
+    await Units.findById(req.params.id).then(response => {
+        res.json({status, response})
+    }).catch(error => {
+        console.error(error)
+    })
 })
 
 //Get unit by ID and company

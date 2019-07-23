@@ -9,4 +9,4 @@ const schema = new mongoose.Schema({
 })
 
 //export model
-module.exports = mongoose.model('Company', schema)
+module.exports = schema
