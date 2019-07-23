@@ -1,14 +1,9 @@
 const router = require('express').Router()
 const Employee = require('../models/employee')
 
-router.get('/employees', (req, res, next) => {
-    const status = 200
-    Employee.find().then(response => {
-        res.json({ status, response })
-    })
-})
+// CREATE new employee record
 
-router.post('/employees', (req, res, next) => {
+router.post('/', (req, res, next) => {
     const status = 201
     Employee.create(req.body).then(response => {
         res.status(201).json({ status, response })
@@ -18,6 +13,23 @@ router.post('/employees', (req, res, next) => {
         err.status = 400
         next(err)
     })
+})
+
+// GET /api/v1/employees?name=[partial-query]
+// GET /api/v1/employees?birthday=[date]
+
+router.get('/', async (req, res, next) => {
+    if (req.query) {
+        // not correct
+        // console.log(req.query)
+        // const status = 200
+        // const response = await Employee.find(req.query).select('_id first_name last_name preferred_name position birthday email')
+        // res.json({ status, response })
+    } else {
+        const status = 200
+        const response = await Employee.find().select('_id first_name last_name preferred_name position birthday email')
+        res.json({ status, response })
+    }
 })
 
 module.exports = router
