@@ -13,12 +13,17 @@ router.delete('/', async (req, res, next) => {
 
 router.get('/employees', async (req, res, next) => {
   const status = 200
-  const employees = await Units.findById(req.params.unitId).populate({
+  const Unit = await Units.findById(req.params.unitId).populate({
     path: 'company',
     populate: {path: 'employees'}
   })
-  const response = employees.company.employees
-  res.json({status, response })
+  if(Unit.company && Unit.company.employees) {
+    console.log('true')
+    const response = Unit.company.employees
+    res.json({status, response })
+    next()
+  }
+  res.json({status: 404, message: "Could not find any associated employees" })
 })
 
 router.post('/employees', async (req, res, next) => {
@@ -49,18 +54,23 @@ router.get('/employees/:employeeId', async (req, res, next) => {
   res.json({status, response })
 })
 
-// THIS ROUTE IS INCOMPLETE....
 router.delete('/employees/:employeeId', async (req, res, next) => {
   const status = 201
-  const query = await Units.findById(req.params.unitId).populate({
+  const Unit = await Units.findById(req.params.unitId).populate({
     path: 'company',
     populate: {
       path: 'employees',
       match: {_id: req.params.employeeId}
     }
   })
-  const response = query.company.employees
-  res.json({status, response})
+  if(Unit.company.employees) {
+    Unit.company.employees.shift()
+    Unit.save()
+    const response = await Employees.findByIdAndDelete(req.params.employeeId)
+    res.json({status, response})
+    next()
+  }
+  res.json({status:404, message: "The employee was not found"})
 })
 
 module.exports = router
