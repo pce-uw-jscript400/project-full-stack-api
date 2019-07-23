@@ -19,8 +19,17 @@ if (NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(require('body-parser').json())
 
 
-app.use('/api/v1', require('./api/routes/units'))
+app.use('/api/v1/units', require('./api/routes/units'))
 
+app.use('/api/v1/companies', require('./api/routes/units'))
+
+app.use('/api/v1/employees', require('./api/routes/units'))
+
+app.use((err, req, res, next) => {
+    const status = err.status || 500
+    const message = err.message || 'Something went wrong'
+    res.status(status).json({ status, message })
+})
 
 const listener = () => console.log(`You're listening on PORT:5000`)
 app.listen(PORT, listener)
