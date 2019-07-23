@@ -21,9 +21,9 @@ app.use(require('body-parser').json())
 
 app.use('/api/v1/units', require('./api/routes/units'))
 
-app.use('/api/v1/companies', require('./api/routes/units'))
+app.use('/api/v1/companies', require('./api/routes/company'))
 
-app.use('/api/v1/employees', require('./api/routes/units'))
+app.use('/api/v1/employees', require('./api/routes/employee'))
 
 app.use((err, req, res, next) => {
     const status = err.status || 500

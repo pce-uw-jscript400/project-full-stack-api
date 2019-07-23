@@ -1,27 +1,37 @@
 const router = require('express').Router()
 const Units = require('../models/units')
 
-//Get all routes
-router.get('/', (req, res, next) => {
+
+//Get all routes and queries. 
+router.get('/units', async (req, res, next) => {
     const status = 200
-    Units.find().then(response => {
-        res.json({ status, response })
-    })
-    console.log(req.query)
+
+     if(typeof req.query.kind != 'undefined'){
+        res.json(req.query)
+    } else if (typeof req.query.floor != 'undefined') {
+        res.json(req.query)
+    } else if (typeof req.query.occupied != 'undefined') {
+        if (await Units.find().then(response => {res.json({ status, response })}) != 'null'){
+            res.json('No Vancancies')
+        } else {
+            res.json('Vancancy')
+        }
+    } else {
+        await Units.find().then(response => {
+            res.json({ status, response })
+        })
+    }
 })
 
-//Get unit details
-router.get('/units', (req, res, next) => {
-    console.log(req.query)
-})
+
 
 //Get unit by ID
-router.get('/:id', (req, res, next) => {
+router.get('/units/:id?', (req, res, next) => {
     res.json('Something')
 })
 
 //Get unit by ID and company
-router.get('/:id/company', (req, res, next) => {
+router.get('/units/:id/companies', (req, res, next) => {
     res.json('unit id and company')
 })
 

@@ -8,8 +8,9 @@ const schema = new mongoose.Schema({
    position: String,
    email: {type: String, required: true }
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at'}
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at'},
+    versionKey: { type: Number, select: false} 
 })
 
 //export model
-module.exports = schema
+module.exports = mongoose.model('Employee', schema)
