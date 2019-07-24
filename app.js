@@ -22,6 +22,21 @@ app.use('/api/v1/units', require('./api/routes/units'))
 app.use('/api/v1/companies', require('./api/routes/companies'))
 app.use('/api/v1/employees', require('./api/routes/employees'))
 
+
+// Not Found Handler
+app.use((req, res, next) => {
+  const error = new Error(`Could not ${req.method} ${req.path}`)
+  error.status = 404
+  next(error)
+})
+
+// Error Handler
+app.use((err, req, res, next) => {
+  if (NODE_ENV === 'development') console.error(err)
+  const { message, status } = err
+  res.status(status).json({ status, message })
+})
+
 app.use(({ status = 500, message = 'Something went wrong' }, req, res, next) => {
   res.status(status).json({ status, message })
 })

@@ -29,23 +29,24 @@ const Unit = require('../models/unit')
 router.get('/', async (req, res, next) => {
   const status = 200
 
-  if (req.query.occupied) {
-    if (req.query.occupied === 'false') {
-      const response = await Unit.find({company: null } )
-      res.json({ status, response })
+  try {
+    if (req.query.occupied) {
+      if (req.query.occupied === 'false') {
+        const response = await Unit.find({company: null } )
+        res.json({ status, response })
+      } else {
+        const response = await Unit.find({company: {$ne: null}})
+        res.json({status, response})
+      }
     } else {
-      const response = await Unit.find({company: {$ne: null}})
-      res.json({status, response})
+      const response = await Unit.find({...req.query})
+      res.json({ status, response })
     }
-  } else {
-    const response = await Unit.find({...req.query})
-    res.json({ status, response })
+  } catch (error) {
+    const e = new Error(error)
+    e.status = 400
+    next(e)
   }
-
-  // const response = await Unit.find({...req.query})
-  //   // .select('id title start_year season_count characters')
-  //
-  // res.json({ status, response })
 
 })
 
@@ -55,7 +56,6 @@ router.post('/', async (req, res, next) => {
     let response = await Unit.create(req.body)
     res.json({ status, response })
   } catch (error) {
-    console.log(error)
     const e = new Error(error)
     e.status = 400
     next(e)
@@ -66,9 +66,22 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   const status = 200
 
-  const response = await Unit.findById(req.params.id)
+  try {
+    const response = await Unit.findById(req.params.id)
 
-  res.json({ status, response })
+    res.json({ status, response })
+  } catch (error) {
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
+  }
+
 })
 
 // PATCH /api/v1/units/[id]
@@ -84,9 +97,15 @@ router.patch('/:id', async (req, res, next) => {
 
     res.json({ status, response })
   } catch (error) {
-    const e = new Error(error)
-    e.status = 404
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 
 })
@@ -100,9 +119,15 @@ router.delete('/:id', async (req, res, next) => {
 
     res.json({ status, response })
   } catch (error) {
-    const e = new Error(error)
-    e.status = 404
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -120,10 +145,15 @@ router.patch('/:id/company', async (req, res, next) => {
 
     res.json({status, unit})
   } catch (error) {
-    console.log(error)
-    const e = new Error(error)
-    e.status = 404
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -134,14 +164,27 @@ router.delete('/:id/company', async (req, res, next) => {
   try {
     // const response = await Unit.findOneAndDelete({ _id: req.params.id })
     const unit = await Unit.findById(req.params.id)
+
+    if (!unit.company || !unit.company.employees) {
+      const e = new Error('No company listed for this unit')
+      e.status = 404
+      next(e)
+    }
+
     unit.company.remove()
     unit.save()
 
     res.json({status, unit})
   } catch (error) {
-    const e = new Error(error)
-    e.status = 404
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -150,35 +193,27 @@ router.get('/:id/company/employees', async (req, res, next) => {
   const status = 200
 
   try {
-    const response = await Unit.findById(req.params.id)
-      .select('company.employees')
+    const unit = await Unit.findById(req.params.id)
 
-    if (!response.company) {
+    if (!unit.company || !unit.company.employees) {
       const e = new Error('No company listed for this unit')
       e.status = 404
       next(e)
     }
 
-    res.json({ status, response })
+    const employees = unit.company.employees
+
+    res.json({ status, employees })
   } catch (error) {
-    // const response = await Unit.findById(req.params.id)
-    // console.log(error.name)
-    // if () {
-    //     const e = new Error('Id provided does not match any units')
-    //     e.status = 404
-    //     next(e)
-    // } else if () {
-    //   const e = new Error('No company listed for this unit')
-    //   e.status = 400
-    //   next(e)
-    // } else {
-    //   const e = new Error(error)
-    //   e.status = 400
-    //   next(e)
-    // }
-    const e = new Error(error)
-    e.status = 400
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -186,10 +221,30 @@ router.get('/:id/company/employees', async (req, res, next) => {
 router.get('/:id/company/employees/:employeeId', async (req, res, next) => {
   const status = 200
 
-  const response = await Unit.findById(req.params.id)
-  const employee = response.company.employees.id(req.params.employeeId)
+  try {
+    const unit = await Unit.findById(req.params.id)
 
-  res.json({ status, employee })
+    if (!unit.company || !unit.company.employees) {
+      const e = new Error('No company listed for this unit')
+      e.status = 404
+      next(e)
+    }
+
+    const employee = unit.company.employees.id(req.params.employeeId)
+
+    res.json({ status, employee })
+  } catch (error) {
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
+  }
+
 })
 
 // POST /api/v1/units/[id]/company/employees
@@ -197,18 +252,29 @@ router.post('/:id/company/employees', async (req, res, next) => {
   const status = 201
 
   try {
-    const response = await Unit.findById(req.params.id)
+    const unit = await Unit.findById(req.params.id)
+
+    if (!unit.company || !unit.company.employees) {
+      const e = new Error('No company listed for this unit')
+      e.status = 404
+      next(e)
+    }
 
     const employee = req.body
-    response.company.employees.push(employee)
-    await response.save()
+    unit.company.employees.push(employee)
+    await unit.save()
 
     res.json({ status, employee })
   } catch (error) {
-    console.log(error)
-    const e = new Error(error)
-    e.status = 400
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -217,24 +283,29 @@ router.patch('/:id/company/employees/:employeeId', async (req, res, next) => {
   const status = 201
 
   try {
-
     const unit = await Unit.findById(req.params.id)
+
+    if (!unit.company || !unit.company.employees) {
+      const e = new Error('No company listed for this unit')
+      e.status = 404
+      next(e)
+    }
 
     const employee = unit.company.employees.id(req.params.employeeId)
     employee.set(req.body)
     await unit.save()
 
-    //if (employee === null){
-        //status = 404
-        //const response = "No employee with the ID found"
-        //res.json({status, response})
-   // }
     res.json({status, employee})
   } catch (error) {
-    console.log(error)
-    const e = new Error(error)
-    e.status = 400
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 
@@ -244,16 +315,28 @@ router.delete('/:id/company/employees/:employeeId', async (req, res, next) => {
 
   try {
     const unit = await Unit.findById(req.params.id)
+
+    if (!unit.company || !unit.company.employees) {
+      const e = new Error('No company listed for this unit')
+      e.status = 404
+      next(e)
+    }
+
     const employee = unit.company.employees.id(req.params.employeeId)
     employee.remove()
     await unit.save()
 
     res.json({status, employee})
   } catch (error) {
-    console.log(error)
-    const e = new Error(error)
-    e.status = 400
-    next(e)
+    if (error.name === 'CastError') {
+      const e = new Error('Id provided does not match any units')
+      e.status = 404
+      next(e)
+    } else {
+      const e = new Error(error)
+      e.status = 404
+      next(e)
+    }
   }
 })
 

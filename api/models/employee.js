@@ -15,9 +15,9 @@ const EmployeeSchema = new mongoose.Schema({
   birthday: Date,
   email: {
     type: String,
-    required: true
+    required: true,
+    match: /^\w+@\w+\.[a-z]*$/
   }
 })
-
 
 module.exports = mongoose.model('Employee', EmployeeSchema)

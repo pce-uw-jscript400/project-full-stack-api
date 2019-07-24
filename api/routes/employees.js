@@ -6,13 +6,15 @@ const Employee = require('../models/employee')
 // GET /api/v1/employees?name=[partial-query]
 // GET /api/v1/employees?birthday=[date]
 
-// { "authors": { "$regex": req.query, "$options": "i" } }
 router.get('/', async (req, res, next) => {
   const status = 200
   try {
+    // this returns an empty response :(
     const response = await Employee.find({...req.query})
       // .select('company.employees')
-
+      // .select('_id first_name last_name preferred_name position birthday email')
+    // query.size
+    // https://mongoosejs.com/docs/api.html#query_Query-size
     res.json({ status, response })
   } catch (error) {
     console.log(error)

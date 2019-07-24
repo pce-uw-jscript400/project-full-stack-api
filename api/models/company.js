@@ -9,7 +9,8 @@ const CompanySchema = new mongoose.Schema({
   },
   contact_email: {
     type: String,
-    required: true
+    required: true,
+    match: /^\w+@\w+\.[a-z]*$/
   },
   employees: [employeeSchema]
   }, {
@@ -18,5 +19,3 @@ const CompanySchema = new mongoose.Schema({
 
 
 module.exports = mongoose.model('Company', CompanySchema)
-
-// validate: match: /^\w+@\w+\.[a-z]*$/

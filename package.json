@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "debug": "PORT=5000 node --inspect app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "reset-db": "node ./db/seeds.js"
   },
   "repository": {
     "type": "git",
