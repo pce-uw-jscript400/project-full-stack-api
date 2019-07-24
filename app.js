@@ -5,6 +5,7 @@ const app = express()
 
 if (MONGO_DB) {
     mongoose.connect(MONGO_DB, {
+        useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false
     })

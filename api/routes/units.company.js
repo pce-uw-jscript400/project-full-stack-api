@@ -1,11 +1,19 @@
 // Include :unitId
 const router = require('express').Router({ mergeParams: true })
 const Units = require('../models/unit')
+// middleware, checks to make sure ids are valid in req.params
+const validateIds = require('../helpers/validateIds')
 
 const publicKeys = '_id kind floor special_monthly_offer company'
 
-//Update the company associated with the given unit and return the newly updated document. This can also be used to change a unit's listing from being empty to being occupied. If the ID provided does not match a unit, return a 404 and an appropriate message.
-router.patch('/', async (req, res, next) => {
+
+/** PATCH /api/v1/units/:unitId/company
+ |
+ | Update the company associated with the given unit and return the newly updated document.
+ | This can also be used to change a unit's listing from being empty to being occupied.
+ | If the ID provided does not match a unit, return a 404 and an appropriate message.
+ */
+router.patch('/', validateIds, async (req, res, next) => {
     const status = 200
     const { unitId } = req.params
     try {
@@ -14,11 +22,20 @@ router.patch('/', async (req, res, next) => {
         if(!unit.company) {
             unit.company = {}
         }
-        Object.assign(unit.company, req.body)
-        await unit.save()
-        
-        //return the unit
-        res.status(status).json({status, unit})
+
+        try {
+            Object.assign(unit.company, req.body)
+            await unit.save()
+            //return the unit
+            res.status(status).json({status, unit})
+
+        } catch(e){
+            //validator issue
+            const err = new Error(e.message)
+            err.status = 400
+            next(err)
+        }
+    
     } catch (err) {
         err.message = `No unit matching id: ${unitId}`
         err.status = 404
@@ -27,8 +44,14 @@ router.patch('/', async (req, res, next) => {
 
 })
 
+/** DELETE /api/v1/units/:unitId/company
+ |
+ | Remove the company from the given unit
+ | If the ID provided does not match a unit, return a 404 and an appropriate message.
+ */
+
 //Remove the company from the given unit. If the ID provided does not match a unit, return a 404 and an appropriate message.
-router.delete('/', async (req, res, next) => {
+router.delete('/', validateIds, async (req, res, next) => {
     const status = 200
     const { unitId } = req.params
     try {

@@ -2,17 +2,28 @@ const router = require('express').Router()
 const Units = require('../models/unit')
 
 //implement name, lte and gte -- lte and gte are keys
-// db.accommodations.find({'name.1': {$exists: true}})
+
+/**
+ * GET /api/v1/companies
+ * optional gte, lte and name params
+ * Return all companies with all their employees information. Do not return an unit information.
+ */
 router.get('/', async (req, res, next) => {
     const status = 200
     const { name, lte, gte } = req.query
-    let response = []
-    const companies = await Units.find().select('company')
-    for (let company of companies) {
-        console.log(company.company.employees)
-        response = response.concat(company.company)
+    
+    let companies = await Units.find().select('company')
+    if (name) {
+        console.log(name)
+        companies = companies.filter(doc => doc.company.name.toLowerCase().includes(name.toLowerCase()))
     }
-    res.status(status).json({status, response})
+    if (gte) {
+        companies = companies.filter(doc => doc.company.employees.length >= parseInt(gte))
+    }
+    if (lte) {
+        companies = companies.filter(doc => doc.company.employees.length <= parseInt(lte))
+    }
+    res.status(status).json({status, companies})
 
 })
 
