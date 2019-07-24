@@ -42,7 +42,6 @@ router.put('/:id', async (req, res, next) => {
   res.json({ status, response })
 })
 
-
 // DELETE
 router.delete('/:id', async (req, res, next) => {
   const status = 200

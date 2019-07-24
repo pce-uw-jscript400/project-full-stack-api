@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const companySchema = require('./company')
+const companySchema = require('./company')
 
 const schema = new mongoose.Schema({
   kind: {
@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
     required: true
   },
   special_monthly_offer: Number,
-  company: String
+  company: companySchema
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
