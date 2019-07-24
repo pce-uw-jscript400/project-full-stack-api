@@ -29,26 +29,31 @@ You will be building a full-stack API with the following resources based off of 
 
 Your API should include the following routes with the specified functionality.
 
-- [ ] [GET /api/v1/units](#GET-apiv1units)
-- [ ] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
-- [ ] [GET /api/v1/units?floor=[integer]](#GET-apiv1unitsfloorinteger)
-- [ ] [GET /api/v1/units?occupied=[true/false]](#GET-apiv1unitsoccupiedtruefalse)
-- [ ] [PATCH /api/v1/units/[id]](#PATCH-apiv1unitsid)
+these are good
+- [x] [GET /api/v1/units](#GET-apiv1units)
+- [x] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
+- [x] [GET /api/v1/units?floor=[integer]](#GET-apiv1unitsfloorinteger)
+this could be better
+- [x] [GET /api/v1/units?occupied=[true/false]](#GET-apiv1unitsoccupiedtruefalse)
+feel pretty good about these
+- [x] [PATCH /api/v1/units/[id]](#PATCH-apiv1unitsid)
+- [x] [PATCH /api/v1/units/[id]/company](#PATCH-apiv1unitsidcompany)
+- [x] [DELETE /api/v1/units/[id]/company](#DELETE-apiv1unitsidcompany)
 
-- [ ] [PATCH /api/v1/units/[id]/company](#PATCH-apiv1unitsidcompany)
-- [ ] [DELETE /api/v1/units/[id]/company](#DELETE-apiv1unitsidcompany)
-
+need to toughen these up against incorrect IDs/errors
 - [ ] [GET /api/v1/units/[id]/company/employees](#GET-apiv1unitsidcompanyemployees)
 - [ ] [GET /api/v1/units/[id]/company/employees/[id]](#GET-apiv1unitsidcompanyemployeesid)
 - [ ] [POST /api/v1/units/[id]/company/employees](#POST-apiv1unitsidcompanyemployees)
 - [ ] [PATCH /api/v1/units/[id]/company/employees/[id]](#PATCH-apiv1unitsidcompanyemployeesid)
 - [ ] [DELETE /api/v1/units/[id]/company/employees/[id]](#DELETE-apiv1unitsidcompanyemployeesid)
 
-- [ ] [GET /api/v1/companies](#GET-apiv1companies)
+these are ok but need to get partial queries working
+- [x] [GET /api/v1/companies](#GET-apiv1companies)
 - [ ] [GET /api/v1/companies?name=[partial-query]](#GET-apiv1companiesnamepartial-query)
 - [ ] [GET /api/v1/companies?employees_lte=[integer]](#GET-apiv1companiesemployees_lteinteger)
 - [ ] [GET /api/v1/companies?employees_gte=[integer]](#GET-apiv1companiesemployees_gteinteger)
 
+how to construct an array?
 - [ ] [GET /api/v1/employees?name=[partial-query]](#GET-apiv1employeesnamepartial-query)
 - [ ] [GET /api/v1/employees?birthday=[date]](#GET-apiv1employeesbirthdaydate)
 
