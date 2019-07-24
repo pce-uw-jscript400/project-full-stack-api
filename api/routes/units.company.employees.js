@@ -1,11 +1,13 @@
 // Include :unitId
 const router = require('express').Router({ mergeParams: true })
 const Units = require('../models/unit')
+// my first middleware, checks to make sure 
+const helpers = require('./api/helpers')
 
 //Return all employees for the given company.
 //If no company is listed, return a 404 and an appropriate message.
 //If the ID provided does not match a unit, return a 404 and a different appropriate message.
-router.get('/', async (req, res, next) =>{
+router.get('/', helpers.validatdeIds, async (req, res, next) =>{
     const status = 200
     const { unitId } = req.params
     let unit
@@ -33,7 +35,7 @@ router.get('/', async (req, res, next) =>{
 //If no company is listed, return a 404 and an appropriate message.
 //If the unit ID provided does not match a unit, return a 404 and a different appropriate message.
 //If no employee with that ID exists, return a different appropriate message.
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', helpers.validatdeIds, async (req, res, next) => {
     const status = 200
     const { id, unitId } = req.params
     const unit = await Units.findById(unitId)
@@ -58,7 +60,7 @@ router.get('/:id', async (req, res, next) => {
 //If no company is listed, return a 404 and an appropriate message.
 //If the unit ID provided does not match a unit, return a 404 and a different appropriate message.
 //If the employee information is malformed in any way, return a 400 and an error message with as much detail as possible.
-router.post('/', async (req, res, next) =>{
+router.post('/', helpers.validatdeIds, async (req, res, next) =>{
     const status = 201
     const { unitId } = req.params
     const unit = await Units.findById(unitId)
@@ -87,7 +89,7 @@ router.post('/', async (req, res, next) =>{
 //If the employee information is malformed in any way, return a 400 and an error message with as much detail as possible.
 //If no employee with that ID exists, return a different appropriate message.
 
-router.patch('/:id', async (req, res, next) =>{
+router.patch('/:id', helpers.validatdeIds, async (req, res, next) =>{
     const status = 200
     const { id, unitId } = req.params
     const unit = await Units.findById(unitId)
@@ -120,7 +122,7 @@ router.patch('/:id', async (req, res, next) =>{
 //If no company is listed, return a 404 and an appropriate message.
 //If the unit ID provided does not match a unit, return a 404 and a different appropriate message.
 //If no employee with that ID exists, return a different appropriate message.
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', helpers.validatdeIds, async (req, res, next) => {
     const status = 200
     const { id, unitId } = req.params
     const unit = await Units.findById(unitId)
