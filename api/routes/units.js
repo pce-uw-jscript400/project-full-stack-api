@@ -2,7 +2,7 @@ const router = require("express").Router();
 // const helpers = require("../helpers/helpers");
 const Unit = require("../models/unit");
 
-const publicKeys = "_id kind floor special_monthly_offer company -__v";
+// const publicKeys = "_id kind floor special_monthly_offer company -__v";
 
 // Initial data for setup and testing
 // const units = [
@@ -15,7 +15,7 @@ const publicKeys = "_id kind floor special_monthly_offer company -__v";
 //   }
 // ];
 
-// GET ALL UNITS
+// WORKING SOLUTION FOR GET ALL UNITS
 // router.get("/", async (req, res, next) => {
 //   const status = 200;
 //   try {
@@ -33,6 +33,7 @@ const publicKeys = "_id kind floor special_monthly_offer company -__v";
 
 // TEST /////////
 
+// PARTIALLY WORKING SOLUTION FOR ?kind=kind
 router.get("/", async (req, res, next) => {
   const status = 200;
   try {
@@ -54,32 +55,27 @@ router.get("/", async (req, res, next) => {
 
 // TEST /////////
 
-// GET KIND OF UNIT
-// router.get("/:kind", async (req, res, next) => {
+// PARTIALLY WORKING SOLUTION FOR ?floor=integer
+// router.get("/", async (req, res, next) => {
 //   const status = 200;
-//   // const kind = req.params.kind;
-//   // const kindList = kind.find().select(publicKeys)
 //   try {
-//     const { kindList } = await Unit.find(req.params.kind).select(kind);
-//     res.json({ status, kindList });
+//     // const response = await Unit.find();
+//     // res.json({ status, response });
+//     const floor = req.query.floor;
+//     const findUnitFloor = await Unit.find({ floor: floor }).getFilter();
+//     console.log("### -> ", findUnitFloor);
+//     res.json({ status, findUnitFloor });
 //   } catch (error) {
 //     console.log(error);
 //     const e = new Error(
-//       "Something went wrong when attempting to get kind of unit."
+//       "Something went wrong when attempting to find kind of unit."
 //     );
 //     e.status = 400;
 //     next(e);
 //   }
 // });
 
-///
-// router.get("/", async (req, res, next) => {
-//   const status = 200;
-//   const { authors } = await Book.findById(req.params.bookId)
-//     .select("authors")
-//     .select(publicKeys);
-//   res.json({ status, authors });
-// });
+// TEST /////////
 
 // router.post("/", async (req, res, next) => {
 //   const status = 201;

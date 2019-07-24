@@ -1,25 +1,22 @@
 const router = require("express").Router();
-// const helpers = require("../helpers/helpers");
-const Company = require("../models/company");
+const Unit = require("../models/unit");
 
-// const publicKeys = "";
-
-// Initial data for setup and testing
-// const employee = [
-//   {
-//     id: "afdajkljeuio",
-//     name: "Bo Knows",
-//     contact_email: "boknows@example.com"
-//     employees: {},
-//   }
-// ];
-
-// router.get("/", async (req, res, next) => {
-//   const status = 200;
-//   const response = await Company.find();
-
-//   res.json({ status, response });
-// });
+router.get("/", async (req, res, next) => {
+  const status = 200;
+  const query = req.query.name;
+  try {
+    const companies = await Unit.find(query);
+    // companies = companies.filter(company => company.name === query);
+    res.json({ status, companies });
+  } catch (error) {
+    console.log(error);
+    const e = new Error(
+      "Something went wrong when attempting to get all the companies."
+    );
+    e.status = 400;
+    next(e);
+  }
+});
 
 // router.post("/", async (req, res, next) => {
 //   const status = 201;
