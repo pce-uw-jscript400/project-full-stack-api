@@ -20,8 +20,8 @@ if (MONGO_DB_CONNECTION) {
 
   // Routes
 app.use('/api/v1/units', require('./api/routes/unit'))
-//app.use('/api/v1/companies', require('./api/routes/company'))
-
+app.use('/api/v1/companies', require('./api/routes/company'))
+app.use('/api/v1/employees',require('./api/routes/employee'))
 
 // Not Found Handler
 app.use((req, res, next) => {
