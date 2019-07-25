@@ -14,7 +14,6 @@ router.get('/', async (req, res, next) => {
     
     let companies = await Units.find().select('company')
     if (name) {
-        console.log(name)
         companies = companies.filter(doc => doc.company.name.toLowerCase().includes(name.toLowerCase()))
     }
     if (gte) {
