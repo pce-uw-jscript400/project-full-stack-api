@@ -14,7 +14,10 @@ const schema = new mongoose.Schema({
     birthday: Date,
     email: String,
 }, {
-    timestamps: {createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
 })
 
 module.exports = mongoose.model('Employee', schema)

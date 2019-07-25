@@ -15,10 +15,10 @@ router.post('/', (req, res, next) => {
     })
 })
 
-// GET /api/v1/companies
-// GET /api/v1/companies?name=[partial-query]
-// GET /api/v1/companies?employees_lte=[integer]
-// GET /api/v1/companies?employees_gte=[integer]
+// [ ] [GET /api/v1/companies]
+// [ ] [GET /api/v1/companies?name=[partial-query]]
+// [ ] [GET /api/v1/companies?employees_lte=[integer]]
+// [ ] [GET /api/v1/companies?employees_gte=[integer]]
 
 router.get('/', async (req, res, next) => {
     if (req.query) {

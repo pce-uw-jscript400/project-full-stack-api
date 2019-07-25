@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const employeeSchema = require('./employee').schema;
 
 const schema = new mongoose.Schema({
     name: {
@@ -9,9 +10,12 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    employees: ''
+    employees: employeeSchema
 }, {
-    timestamps: {createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
 })
 
 module.exports = mongoose.model('Company', schema)

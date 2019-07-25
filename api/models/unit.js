@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const companySchema = require('./company')
+const mongoose = require('mongoose');
+const companySchema = require('./company').schema;
 
 
 const schema = new mongoose.Schema({
@@ -13,13 +13,12 @@ const schema = new mongoose.Schema({
         required: true
     },
     special_monthly_offer: Number,
-    // company: String
-    // company: {
-    //     type: String,
-    //     enum: [companySchema.name]
-    // },
+    company: companySchema
 }, {
-    timestamps: {createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
 })
 
 module.exports = mongoose.model('Unit', schema)

@@ -15,21 +15,23 @@ router.post('/', (req, res, next) => {
     })
 })
 
-// GET /api/v1/employees?name=[partial-query]
-// GET /api/v1/employees?birthday=[date]
+// [ ] [GET /api/v1/employees?name=[partial-query]]
+// [ ] [GET /api/v1/employees?birthday=[date]]
 
 router.get('/', async (req, res, next) => {
-    if (req.query) {
+    // if (req.query) {
         // not correct
         // console.log(req.query)
         // const status = 200
         // const response = await Employee.find(req.query).select('_id first_name last_name preferred_name position birthday email')
         // res.json({ status, response })
-    } else {
+    // } else {
+        const { birthday } = req.query
         const status = 200
-        const response = await Employee.find().select('_id first_name last_name preferred_name position birthday email')
+        console.log(birthday, req.query)
+        const response = await Employee.find(req.query).select('_id first_name last_name preferred_name position birthday email')
         res.json({ status, response })
-    }
+    // }
 })
 
 module.exports = router
