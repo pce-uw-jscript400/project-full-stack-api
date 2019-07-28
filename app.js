@@ -18,8 +18,8 @@ app.use(require('body-parser').json())
 
 //Routes
 app.use('/api/units', require('./api/routes/units'));
-// app.use('/api/', require('./api/routes/employees'));
-// app.use('/api/', require('./api/routes/companies'));
+app.use('/api/employees', require('./api/routes/employees'));
+app.use('/api/companies', require('./api/routes/companies'));
 
 app.use(({ status = 500, message = 'Something went wrong' }, req, res, next) => {
     res.status(status).json({ status, message })

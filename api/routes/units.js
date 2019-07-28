@@ -13,6 +13,25 @@ router.get('/',(req, res, next) => {
     })
 })
 
+// GET /api/units?kind=[kind]
+// * e.g. `GET http://localhost:5000/api/units?kind=desk`
+// Return a list of all units where the kind is equal to the provided kind. If none are found, return an empty array.
+
+router.get('/', async (req, res, next) => {
+    const status = 200;
+    try {
+        const response = await Unit.find().select('kind')
+        res.json({ status, response })
+        } 
+    catch (error) {
+        console.log(error);
+        const e = new Error("Problem with showing kind for unit.");
+        e.status = 400;
+        next(e);
+    }
+});
+
+
 // GET companies
 router.get(':id/company',async (req, res, next) => {
     const status = 200
@@ -117,21 +136,21 @@ router.patch('/:id/companies', (req, res, next) => {
 // e.g. GET http://localhost:5000/api/units?floor=2
 // Return a list of all units that are on the provided floor. If none are found, return an empty array.
 
-// router.get('/units', async (req, res, next) => {
-//     const status = 200
-//     // const response = await Unit.find({ floor: req.query.floor }).select('kind floor')
-//     // res.json({ status, response })
-//     Unit.find({...req.query}).select('-_id -companies -created_at kind floor') //Promise
-//     .then((response) => {
-//         const status = 200
-//         res.status(status).json({ status, response })
-//     })
-//     .catch((error) => {
-//         error.status = 500
-//         error.message = `${req.method} ${req.path} failed. Internal server error.`
-//         next(error)
-//     })
-// })
+router.get('/', async (req, res, next) => {
+    const status = 200
+    // const response = await Unit.find({ floor: req.query.floor }).select('kind floor')
+    // res.json({ status, response })
+    Unit.find({...req.query}).select('-_id -companies -created_at kind floor')
+    .then((response) => {
+        const status = 200
+        res.status(status).json({ status, response })
+    })
+    .catch((error) => {
+        error.status = 500
+        error.message = `${req.method} ${req.path} failed. Internal server error.`
+        next(error)
+    })
+})
 
 
 

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-
-const Company = require('./companies')
+const companySchema = require('./companies')
 
 const schema = new mongoose.Schema({
     kind: {type: String, required: true},
     floor: {type: Number, required: true},
-    company: [Company]
+    special_monthly_offer: Number,
+    company: [companySchema]
 }, {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })

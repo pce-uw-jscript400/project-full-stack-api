@@ -30,7 +30,7 @@ You will be building a full-stack API with the following resources based off of 
 Your API should include the following routes with the specified functionality.
 
 + [ ] [GET /api/v1/units](#GET-apiv1units)
-- [ ] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
++ [ ] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
 - [ ] [GET /api/v1/units?floor=[integer]](#GET-apiv1unitsfloorinteger)
 - [ ] [GET /api/v1/units?occupied=[true/false]](#GET-apiv1unitsoccupiedtruefalse)
 + [ ] [PATCH /api/v1/units/[id]](#PATCH-apiv1unitsid)
@@ -44,7 +44,7 @@ Your API should include the following routes with the specified functionality.
 - [ ] [PATCH /api/v1/units/[id]/company/employees/[id]](#PATCH-apiv1unitsidcompanyemployeesid)
 - [ ] [DELETE /api/v1/units/[id]/company/employees/[id]](#DELETE-apiv1unitsidcompanyemployeesid)
 
-- [ ] [GET /api/v1/companies](#GET-apiv1companies)
++ [ ] [GET /api/v1/companies](#GET-apiv1companies)
 - [ ] [GET /api/v1/companies?name=[partial-query]](#GET-apiv1companiesnamepartial-query)
 - [ ] [GET /api/v1/companies?employees_lte=[integer]](#GET-apiv1companiesemployees_lteinteger)
 - [ ] [GET /api/v1/companies?employees_gte=[integer]](#GET-apiv1companiesemployees_gteinteger)
