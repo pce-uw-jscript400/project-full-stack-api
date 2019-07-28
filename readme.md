@@ -29,28 +29,27 @@ You will be building a full-stack API with the following resources based off of 
 
 Your API should include the following routes with the specified functionality.
 
-- [ ] [GET /api/v1/units](#GET-apiv1units)
-- [ ] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
-- [ ] [GET /api/v1/units?floor=[integer]](#GET-apiv1unitsfloorinteger)
-- [ ] [GET /api/v1/units?occupied=[true/false]](#GET-apiv1unitsoccupiedtruefalse)
-- [ ] [PATCH /api/v1/units/[id]](#PATCH-apiv1unitsid)
+- [x] [GET /api/v1/units](#GET-apiv1units)
+- [x] [GET /api/v1/units?kind=[kind]](#GET-apiv1unitskindkind)
+- [x] [GET /api/v1/units?floor=[integer]](#GET-apiv1unitsfloorinteger)
+- [x] [GET /api/v1/units?occupied=[true/false]](#GET-apiv1unitsoccupiedtruefalse)
+- [x] [PATCH /api/v1/units/[id]](#PATCH-apiv1unitsid)
+- [x] [PATCH /api/v1/units/[id]/company](#PATCH-apiv1unitsidcompany)
+- [x] [DELETE /api/v1/units/[id]/company](#DELETE-apiv1unitsidcompany)
 
-- [ ] [PATCH /api/v1/units/[id]/company](#PATCH-apiv1unitsidcompany)
-- [ ] [DELETE /api/v1/units/[id]/company](#DELETE-apiv1unitsidcompany)
+- [x] [GET /api/v1/units/[id]/company/employees](#GET-apiv1unitsidcompanyemployees)
+- [x] [GET /api/v1/units/[id]/company/employees/[id]](#GET-apiv1unitsidcompanyemployeesid)
+- [x] [POST /api/v1/units/[id]/company/employees](#POST-apiv1unitsidcompanyemployees)
+- [x] [PATCH /api/v1/units/[id]/company/employees/[id]](#PATCH-apiv1unitsidcompanyemployeesid)
+- [x] [DELETE /api/v1/units/[id]/company/employees/[id]](#DELETE-apiv1unitsidcompanyemployeesid)
 
-- [ ] [GET /api/v1/units/[id]/company/employees](#GET-apiv1unitsidcompanyemployees)
-- [ ] [GET /api/v1/units/[id]/company/employees/[id]](#GET-apiv1unitsidcompanyemployeesid)
-- [ ] [POST /api/v1/units/[id]/company/employees](#POST-apiv1unitsidcompanyemployees)
-- [ ] [PATCH /api/v1/units/[id]/company/employees/[id]](#PATCH-apiv1unitsidcompanyemployeesid)
-- [ ] [DELETE /api/v1/units/[id]/company/employees/[id]](#DELETE-apiv1unitsidcompanyemployeesid)
+- [x] [GET /api/v1/companies](#GET-apiv1companies)
+- [x] [GET /api/v1/companies?name=[partial-query]](#GET-apiv1companiesnamepartial-query)
+- [x] [GET /api/v1/companies?employees_lte=[integer]](#GET-apiv1companiesemployees_lteinteger)
+- [x] [GET /api/v1/companies?employees_gte=[integer]](#GET-apiv1companiesemployees_gteinteger)
 
-- [ ] [GET /api/v1/companies](#GET-apiv1companies)
-- [ ] [GET /api/v1/companies?name=[partial-query]](#GET-apiv1companiesnamepartial-query)
-- [ ] [GET /api/v1/companies?employees_lte=[integer]](#GET-apiv1companiesemployees_lteinteger)
-- [ ] [GET /api/v1/companies?employees_gte=[integer]](#GET-apiv1companiesemployees_gteinteger)
-
-- [ ] [GET /api/v1/employees?name=[partial-query]](#GET-apiv1employeesnamepartial-query)
-- [ ] [GET /api/v1/employees?birthday=[date]](#GET-apiv1employeesbirthdaydate)
+- [x] [GET /api/v1/employees?name=[partial-query]](#GET-apiv1employeesnamepartial-query)
+- [x] [GET /api/v1/employees?birthday=[date]](#GET-apiv1employeesbirthdaydate)
 
 **NOTE: Exclude the `_v` field from each document.**
 
