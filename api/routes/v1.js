@@ -198,7 +198,7 @@ router.post('/units/:id/company/employees/', async (req, res, next)=> {
 // return a 400 and an error message with as much detail as possible. If no employee with that ID exists,
 // return a _different_ appropriate message.
 router.patch('/units/:id/company/employees/:eid', async (req, res, next)=> {
-    const status = 201
+    let status = 201
     try{
         const unit = await Units.findOne({_id: req.params.id})
         const theCompany = unit.company
@@ -230,7 +230,6 @@ router.patch('/units/:id/company/employees/:eid', async (req, res, next)=> {
     }
 })
 
-/
 /// DELETE /api/v1/units/[id]/company/employees/[id]
 //Destroy the employee document and return that employee's document for the given company.
 //If no company is listed, return a 404 and an appropriate message.
@@ -264,6 +263,7 @@ router.delete('/units/:id/company/employees/:eid', async (req, res, next)=> {
     }
 })
 
+
 //GET /api/v1/companies
 //Return all companies with all their employees information. Do not return an unit information.
 //GET /api/v1/companies?name=[partial-query]
@@ -282,14 +282,20 @@ router.delete('/units/:id/company/employees/:eid', async (req, res, next)=> {
 //the given integer. Do not return any unit information. If no companies are found, return an empty array.
 
 router.get('/companies', async(req, res, next)=> {
-    const status = 201
+    let status = 201
     try{
-        const employees_lte = req.query.employees_lte
+        const { employees_lte } = req.query
+        const { employees_gte } = req.query
 
         if (employees_lte){
-            const unit = await Units.find()
-            //const company = unit.company
-            const reponse = unit
+            const companies = await Units.find({'company.employees':{$exists:true}}).select('-_id company')
+            //console.log(JSON.stringify(companies))
+            response = companies.filter(result => result.company.employees.length < employees_lte);
+            status = 200
+            res.json({status, response});
+        }else if(employees_gte){
+            const companies = await Units.find({'company.employees':{$exists:true}}).select('-_id company')
+            response = companies.filter(result => result.company.employees.length > employees_gte);
             res.json({status, response});
         }else{
             const companyName = req.query.name
@@ -298,15 +304,16 @@ router.get('/companies', async(req, res, next)=> {
             res.json({status, response});
         }
 
+
     }catch(error){
-        console.log(`REALERR:${error}`)
+        console.log(error)
         const e = new Error("Something went wrong")
         e.status = 400
         next(e)
     }
 });
 
-
+//Didn't Get to this one
 // GET /api/v1/employees?name=[partial-query]
 // e.g. `GET http://localhost:5000/api/v1/employees?name=ada`
 //Return all employees based off of the partial search string. The search should be for their full name.
