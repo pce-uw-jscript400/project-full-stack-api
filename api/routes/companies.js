@@ -9,39 +9,27 @@ const Unit = require('../models/unit')
 router.get('/', async (req, res, next) => {
   const status = 200
   try {
-    // const response = await Unit.find({...req.query})
-    //   .select('company')
+    const units = await Unit.find().select('company')
 
-    // { "authors": { "$regex": req.query, "$options": "i" } }
-    // { "authors": /Alex/i }
-
-    // .find({company: {$regex: `.*${req.query.name}.*`}})
-
-    // searchOptions = {status:'new'}
-    // searchOptions.$and = [
-    //  {'name.first': {$regex:first, $options:'i'}},
-    //  {'name.last': {$regex:last, $options:'i'}}
-    // ]
-    // Lead.find(searchOptions)
-
-    // find({ name: new RegExp(x, 'i')}})
-
-    // this all just returns an empty array :(
-    if (req.query) {
-      const match = `.*${req.query.name}.*`
-
-      const response = await Unit
-        .find({company: new RegExp(match, 'i')})
-        .select('company')
-
-      res.json({ status, response })
+    let companies
+    if (req.query.name) {
+      companies = units.filter(unit =>
+        unit.company.name.toLowerCase().includes(req.query.name.toLowerCase())
+      )
+    } else if (req.query.employees_lte) {
+      companies = units.filter(unit =>
+        unit.company.employees.length <= parseInt(req.query.employees_lte)
+      )
+    } else if (req.query.employees_gte) {
+      companies = units.filter(unit =>
+        unit.company.employees.length >= parseInt(req.query.employees_gte)
+      )
     } else {
-      const response = await Unit.find()
-        .select('company')
+      companies = units
     }
 
+    res.json({ status, companies })
   } catch (error) {
-    console.log(error)
     const e = new Error(error)
     e.status = 400
     next(e)
