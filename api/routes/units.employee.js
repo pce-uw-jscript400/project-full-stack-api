@@ -32,10 +32,26 @@ router.get('/:id', async (req, res, next) => {
   res.status(status).json({ status, employee });
 })
 
-// [PATCH /api/v1/units/[id]/company/employees/[id]]
-// [DELETE /api/v1/units/[id]/company/employees/[id]]
+// PATCH /api/v1/units/[id]/company/employees/[id]
+router.patch('/:id', async (req, res, next) => {
+  const status = 200
+  const unit = await Units.findById(req.params.unitId)
+  const employee = unit.company.employees.id(req.params.id)
+  
+  Object.assign(employee, req.body)
+  await unit.save()
+  
+  res.status(status).json({ status, employee });
+})
 
+// DELETE /api/v1/units/[id]/company/employees/[id]
+router.delete('/:id', async (req, res, next) => {
+  const status = 200
+  const unit = await Units.findById(req.params.unitId)
+  const employee = unit.company.employees.id(req.params.id).remove()
+  await unit.save()
 
-
+  res.status(status).json({ status, employee });
+})
 
 module.exports = router
