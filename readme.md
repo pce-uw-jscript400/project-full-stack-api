@@ -38,7 +38,7 @@ Your API should include the following routes with the specified functionality.
 - [√] [PATCH /api/v1/units/[id]/company](#PATCH-apiv1unitsidcompany)
 - [√] [DELETE /api/v1/units/[id]/company](#DELETE-apiv1unitsidcompany)
 
-- [ ] [GET /api/v1/units/[id]/company/employees](#GET-apiv1unitsidcompanyemployees)
+- [√] [GET /api/v1/units/[id]/company/employees](#GET-apiv1unitsidcompanyemployees)
 - [ ] [GET /api/v1/units/[id]/company/employees/[id]](#GET-apiv1unitsidcompanyemployeesid)
 - [ ] [POST /api/v1/units/[id]/company/employees](#POST-apiv1unitsidcompanyemployees)
 - [ ] [PATCH /api/v1/units/[id]/company/employees/[id]](#PATCH-apiv1unitsidcompanyemployeesid)

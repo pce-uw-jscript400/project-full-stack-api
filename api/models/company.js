@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const employeeSchema = require('./employee')
+const employeeSchema = require('./employee')
 
 const schema = new mongoose.Schema({
   name: {
@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
     // //   message: props => `${props.value} is not a valid phone number!`
     // // }, https://mongoosejs.com/docs/validation.html#built-in-validators
     // required: [true, 'Company email is required']
-  employees: String
+  employees: [employeeSchema]
 })
 
 module.exports = schema

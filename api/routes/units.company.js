@@ -10,21 +10,7 @@ router.get('/', async (req, res, next) => {
   res.json({ status, company })
 })
 
-// CREATE
-router.post('/', async (req, res, next) => {
-  const status = 201
-  try {
-    const response = await Company.create(req.body)
-    res.json({ status, response })
-
-  } catch (error) {
-    error.status = 400
-    error.message = 'Invalid data. Please try again.'
-    
-    next(error)
-  }
-})
-
+// UPDATE
 router.patch('/', async (req, res, next) => {
   const status = 200
   const unit = await Units.findById(req.params.unitId)
