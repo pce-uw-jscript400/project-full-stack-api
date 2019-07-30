@@ -33,7 +33,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // UPDATE
-router.put('/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
   const status = 200
   const query = {_id:req.params.id}
   const options = {new:true}
