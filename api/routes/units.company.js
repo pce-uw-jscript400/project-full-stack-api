@@ -27,9 +27,11 @@ router.post('/', async (req, res, next) => {
 
 router.patch('/', async (req, res, next) => {
   const status = 200
-  const {company} = await Units.findById(req.params.unitId).select('company')
+  const unit = await Units.findById(req.params.unitId)
+  const company = unit.company
   
   Object.assign(company, req.body)
+  await unit.save()
   
   res.status(status).json({ status, company });
 })
