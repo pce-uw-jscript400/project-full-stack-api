@@ -10,10 +10,11 @@ const schema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  occupied: Boolean,
   special_monthly_offer: Number,
   company: companySchema
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
 
-module.exports = mongoose.model('Units', schema)
+module.exports = mongoose.model('Units', schema) 

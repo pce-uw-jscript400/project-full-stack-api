@@ -4,7 +4,7 @@ const Units = require('../models/units')
 // GET ALL
 router.get('/', async (req, res, next) => {
   const status = 200
-  const response = await Units.find(req.params.id).select('_id kind floor special_monthly_offer company')
+  const response = await Units.find(req.query).select('_id kind floor occupied special_monthly_offer company')
 
   res.json({ status, response })
 })
@@ -28,7 +28,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   const status = 200
   const response = await Units.findById(req.params.id).select('_id kind floor special_monthly_offer company')
-
+ 
   res.json({ status, response })
 })
 
