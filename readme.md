@@ -96,11 +96,10 @@ Update the company associated with the given unit and return the newly updated d
 
 Remove the company from the given unit. If the ID provided does not match a unit, return a 404 and an appropriate message.
 
-### GET /api/v1/units/[id]/company/employees
 
 * e.g. `GET http://localhost:5000/api/v1/units/5/company/employees`
 
-Return all employees for the given company. If no company is listed, return a 404 and an appropriate message. If the ID provided does not match a unit, return a 404 and a _different_ appropriate message. 
+Return all employees for the given company. If no company is listed, return a 404 and an appropriate message. If the ID provided does not match a unit, return a 404 and a _different_ appropriate message.
 
 ### GET /api/v1/units/[id]/company/employees/[id]
 

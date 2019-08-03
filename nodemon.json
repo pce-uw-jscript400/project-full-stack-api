@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_DB_CONNECTION": "mongodb+srv://alycia:R0xieP00p@general-purpose-tewk7.mongodb.net/full_stack_api?retryWrites=true&w=majority",
+    "NODE_ENV": "development",
+    "PORT": 5000
+  }
+}
