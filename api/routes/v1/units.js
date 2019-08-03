@@ -30,8 +30,22 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:unitId', async (req, res, next) => {
-  const status = 201
+  const status = 200
   const response = await Units.findById(req.params.unitId)
+  res.json({status, response})
+})
+
+router.patch('/:unitId', async (req, res, next) => {
+  const status = 201
+  const unitCheck = await Units.findById(req.params.unitId)
+  if(!unitCheck) {
+    const error = new Error('Unit not found')
+    error.status = 404
+    console.log(error)
+    next(error)
+  }
+  const response = await Units.findByIdAndUpdate(req.params.unitId,{...req.body}, {new: true})
+
   res.json({status, response})
 })
 

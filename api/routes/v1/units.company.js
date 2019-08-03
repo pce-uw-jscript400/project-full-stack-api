@@ -4,6 +4,11 @@ const Companies = require('../../models/companies')
 const Employees = require('../../models/employees')
 
 // Units
+router.patch('/', async (req, res, next) => {
+  const status = 201
+  const response = await Units.findByIdAndUpdate(req.params.unitId, {$set:{company:req.body.company}})
+  res.json({status, response})
+})
 
 router.delete('/', async (req, res, next) => {
   const status = 201
