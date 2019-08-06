@@ -19,6 +19,7 @@ router.post('/', (req, res, next) => {
 // [ ] [GET /api/v1/employees?birthday=[date]]
 
 router.get('/', async (req, res, next) => {
+    const { name, birthday } = req.body
     // if (req.query) {
         // not correct
         // console.log(req.query)
@@ -26,7 +27,6 @@ router.get('/', async (req, res, next) => {
         // const response = await Employee.find(req.query).select('_id first_name last_name preferred_name position birthday email')
         // res.json({ status, response })
     // } else {
-        const { birthday } = req.query
         const status = 200
         console.log(birthday, req.query)
         const response = await Employee.find(req.query).select('_id first_name last_name preferred_name position birthday email')

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const companySchema = require('./company').schema;
 
-
 const schema = new mongoose.Schema({
     kind: {
         type: String,
