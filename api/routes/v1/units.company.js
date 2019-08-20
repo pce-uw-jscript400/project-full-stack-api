@@ -11,9 +11,10 @@ router.patch('/', async (req, res, next) => {
     const unit = await Units.findById(unitId)
       .select('company')
 
-    Object.assign(unit.company, body)
+    const company = unit.company
+    Object.assign(company, body)
     await unit.save()
-    res.json({ status, unit })
+    res.json({ status, company })
 
   } catch(error){ 
     if (error.name === 'CastError'){
@@ -34,7 +35,7 @@ router.delete('/', async (req, res, next) => {
       .remove() 
     await unit.save()
 
-    res.json({ status, unit })
+    res.json({ status, company })
   } catch (error) {
     if (error.name === 'CastError'){
       const message = `Could not find unit with ID of ${req.params.id}`

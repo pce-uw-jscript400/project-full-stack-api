@@ -85,7 +85,7 @@ router.post('/', async (req, res, next) => {
   res.json({ status, newEmployee })
 })
 
-// TODO [PATCH /api/v1/units/[id]/company/employees/[id]]
+//  [PATCH /api/v1/units/[id]/company/employees/[id]]
 router.patch('/:id', async (req, res, next) => {
   const status = 201
   const body = req.body
